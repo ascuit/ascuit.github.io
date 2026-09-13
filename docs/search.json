@@ -1,10 +1,10 @@
 [
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
+    "objectID": "blog.html",
+    "href": "blog.html",
+    "title": "Blog",
     "section": "",
-    "text": "About this site"
+    "text": "My first weeks in MDS\n\n\n\n\n\n\n\n\nSep 10, 2026\n\n\nSicong Deng\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "index.html",
@@ -14,25 +14,25 @@
     "text": "this is milestone 2 of DSCI_521 course\nSicong Deng\nI come from China, and this is my first time in Vancouver and Canada.\nI had a Bachelor major in literature and a minor in software engineering. I just finished my undergraduate, and I hope to learn more about LLM, including training and fine-turing, and other general knowledges of data science. After finishing the program, I just hope to find a local job and try not to starve."
   },
   {
-    "objectID": "about.html#background",
-    "href": "about.html#background",
-    "title": "About",
-    "section": "Background",
-    "text": "Background\nI was a literature student back in undergraduate. But I also had a minor in software engineering, which gives me basic problem-solving skills."
-  },
-  {
-    "objectID": "blog.html",
-    "href": "blog.html",
-    "title": "Blog",
-    "section": "",
-    "text": "My first weeks in MDS\n\n\n\n\n\n\n\n\nSep 10, 2026\n\n\nSicong Deng\n\n\n\n\n\nNo matching items"
-  },
-  {
     "objectID": "posts/first-weeks/index.html",
     "href": "posts/first-weeks/index.html",
     "title": "My first weeks in MDS",
     "section": "",
     "text": "Some pigeons in a Saturday afternoon."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site"
+  },
+  {
+    "objectID": "about.html#background",
+    "href": "about.html#background",
+    "title": "About",
+    "section": "Background",
+    "text": "Background\nI was a literature student back in undergraduate. But I also had a minor in software engineering, which gives me basic problem-solving skills."
   },
   {
     "objectID": "about.html#why-data-science-what-brought-you-to-the-program.",
