@@ -3,3 +3,22 @@ title: "About"
 ---
 
 About this site
+
+## Background
+
+I was a literature student back in undergraduate. But I also had a minor in software engineering, which gives me basic problem-solving skills.
+
+## Why data science: what brought you to the program.
+
+I think it's my background in linguistics and partly technologies.
+
+## Outside of data science
+
+I love reading and watching movies, all sorts of movies.
+
+
+I do photography as hobby; currently it's mainly static, but hopefuly I could start filmming some videos.
+
+
+And now I'm just starting cycling, which I think is a good way to explore the city.
+

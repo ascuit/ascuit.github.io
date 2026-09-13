@@ -9,8 +9,43 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "milestone_web",
+    "title": "sicong deng",
     "section": "",
-    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
+    "text": "this is milestone 2 of DSCI_521 course\nSicong Deng\nI come from China, and this is my first time in Vancouver and Canada.\nI had a Bachelor major in literature and a minor in software engineering. I just finished my undergraduate, and I hope to learn more about LLM, including training and fine-turing, and other general knowledges of data science. After finishing the program, I just hope to find a local job and try not to starve."
+  },
+  {
+    "objectID": "about.html#background",
+    "href": "about.html#background",
+    "title": "About",
+    "section": "Background",
+    "text": "Background\nI was a literature student back in undergraduate. But I also had a minor in software engineering, which gives me basic problem-solving skills."
+  },
+  {
+    "objectID": "blog.html",
+    "href": "blog.html",
+    "title": "Blog",
+    "section": "",
+    "text": "My first weeks in MDS\n\n\n\n\n\n\n\n\nSep 10, 2026\n\n\nSicong Deng\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/first-weeks/index.html",
+    "href": "posts/first-weeks/index.html",
+    "title": "My first weeks in MDS",
+    "section": "",
+    "text": "Some pigeons in a Saturday afternoon."
+  },
+  {
+    "objectID": "about.html#why-data-science-what-brought-you-to-the-program.",
+    "href": "about.html#why-data-science-what-brought-you-to-the-program.",
+    "title": "About",
+    "section": "Why data science: what brought you to the program.",
+    "text": "Why data science: what brought you to the program.\nI think it’s my background in linguistics and partly technologies."
+  },
+  {
+    "objectID": "about.html#outside-of-data-science",
+    "href": "about.html#outside-of-data-science",
+    "title": "About",
+    "section": "Outside of data science",
+    "text": "Outside of data science\nI love reading and watching movies, all sorts of movies.\nI do photography as hobby; currently it’s mainly static, but hopefuly I could start filmming some videos.\nAnd now I’m just starting cycling, which I think is a good way to explore the city."
   }
 ]

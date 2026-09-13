@@ -1,0 +1,7 @@
+---
+title: "My first weeks in MDS"
+author: "Sicong Deng"
+date: 2026-09-10
+---
+
+![Some pigeons in a Saturday afternoon.](DSC_9688.JPG)
