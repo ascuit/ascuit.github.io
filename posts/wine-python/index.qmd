@@ -1,0 +1,85 @@
+---
+title: "Visiting Wine Dataset"
+author: "Sicong Deng"
+date: 2026-09-21
+jupyter: python3
+---
+# 
+
+##  Loading data and utils
+
+We use for this part `wine` dataset, which is released in [UCI Machine Learning Repository](https://archive.ics.uci.edu/dataset/109/wine?utm_source=chatgpt.com).
+
+This dataset is licensed under a Creative Commons Attribution 4.0 International (CC BY 4.0) license. DOI: 10.24432/C5PC7J
+
+For data analysis and vitualization, `panda` and `matplotllib ` are used.
+
+```{python}
+from sklearn.datasets import load_wine
+import pandas as pd
+import matplotlib.pyplot as plt
+```
+
+The `Wine` dataset contains the results of chemical analyses of wines produced from three different cultivars in the same region of Italy. Each observation represents one wine sample and contains 13 numerical features describing its chemical properties.
+
+```{python}
+wine = load_wine(as_frame=True)
+df = wine.frame
+df.head()
+df.describe()
+```
+
+## Analysis on Wines
+
+```{python}
+wine_selected = df[
+    ["alcohol", "malic_acid", "magnesium", "color_intensity", "target"]
+]
+
+wine_selected.head()
+```
+
+```{python}
+wine_selected = wine_selected.copy()
+
+wine_selected["class"] = wine_selected["target"].map({
+    0: "class_0",
+    1: "class_1",
+    2: "class_2"
+})
+
+wine_selected = wine_selected.drop(columns="target")
+
+wine_selected.head()
+```
+
+```{python}
+class_summary = (
+    wine_selected
+    .groupby("class")
+    .agg(
+        mean_alcohol=("alcohol", "mean"),
+        mean_malic_acid=("malic_acid", "mean"),
+        mean_magnesium=("magnesium", "mean"),
+        mean_color_intensity=("color_intensity", "mean"),
+        n=("class", "size")
+    )
+    .reset_index()
+)
+
+class_summary
+```
+```{python}
+for wine_class, group in wine_selected.groupby("class"):
+    plt.scatter(
+        group["alcohol"],
+        group["color_intensity"],
+        label=wine_class,
+        alpha=0.7
+    )
+plt.xlabel("Alcohol")
+plt.ylabel("Color intensity")
+plt.title("Alcohol vs. Color Intensity by Wine Class")
+plt.legend(title="Wine class")
+plt.show()
+```
