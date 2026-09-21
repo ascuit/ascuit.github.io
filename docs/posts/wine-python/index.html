@@ -9,7 +9,7 @@
 <meta name="author" content="Sicong Deng">
 <meta name="dcterms.date" content="2026-09-21">
 
-<title>Visiting Wine Dataset – Sicong Deng</title>
+<title>Visiting Wine Dataset with Python – Sicong Deng</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -167,6 +167,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#loading-data-and-utils" id="toc-loading-data-and-utils" class="nav-link" data-scroll-target="#loading-data-and-utils">Loading data and utils</a></li>
   <li><a href="#analysis-on-wines" id="toc-analysis-on-wines" class="nav-link" data-scroll-target="#analysis-on-wines">Analysis on Wines</a></li>
+  <li><a href="#plotting" id="toc-plotting" class="nav-link" data-scroll-target="#plotting">Plotting</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -176,7 +177,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Visiting Wine Dataset</h1>
+<h1 class="title">Visiting Wine Dataset with Python</h1>
 </div>
 
 
@@ -212,13 +213,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>We use for this part <code>wine</code> dataset, which is released in <a href="https://archive.ics.uci.edu/dataset/109/wine?utm_source=chatgpt.com">UCI Machine Learning Repository</a>.</p>
 <p>This dataset is licensed under a Creative Commons Attribution 4.0 International (CC BY 4.0) license. DOI: 10.24432/C5PC7J</p>
 <p>For data analysis and vitualization, <code>panda</code> and <code>matplotllib</code> are used.</p>
-<div id="c8fadcad" class="cell" data-execution_count="1">
+<div id="setup" class="cell" data-message="false" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_wine</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The <code>Wine</code> dataset contains the results of chemical analyses of wines produced from three different cultivars in the same region of Italy. Each observation represents one wine sample and contains 13 numerical features describing its chemical properties.</p>
-<div id="7c2a1b95" class="cell" data-execution_count="2">
+<div id="866cdcc3" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>wine <span class="op">=</span> load_wine(as_frame<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> wine.frame</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>df.head()</span>
@@ -393,7 +394,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="analysis-on-wines" class="level2">
 <h2 class="anchored" data-anchor-id="analysis-on-wines">Analysis on Wines</h2>
-<div id="e38a181f" class="cell" data-execution_count="3">
+<div id="ebf27f98" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>wine_selected <span class="op">=</span> df[</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    [<span class="st">"alcohol"</span>, <span class="st">"malic_acid"</span>, <span class="st">"magnesium"</span>, <span class="st">"color_intensity"</span>, <span class="st">"target"</span>]</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>]</span>
@@ -461,7 +462,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div id="af93f0c6" class="cell" data-execution_count="4">
+<div id="c46fd60c" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>wine_selected <span class="op">=</span> wine_selected.copy()</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>wine_selected[<span class="st">"class"</span>] <span class="op">=</span> wine_selected[<span class="st">"target"</span>].<span class="bu">map</span>({</span>
@@ -535,7 +536,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div id="835c4265" class="cell" data-execution_count="5">
+<div id="c59690c6" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>class_summary <span class="op">=</span> (</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    wine_selected</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    .groupby(<span class="st">"class"</span>)</span>
@@ -600,7 +601,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div id="218f73e9" class="cell" data-execution_count="6">
+</section>
+<section id="plotting" class="level2">
+<h2 class="anchored" data-anchor-id="plotting">Plotting</h2>
+<div id="cell-fig-wine-alcohol-color" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> wine_class, group <span class="kw">in</span> wine_selected.groupby(<span class="st">"class"</span>):</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    plt.scatter(</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>        group[<span class="st">"alcohol"</span>],</span>
@@ -614,9 +618,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>plt.legend(title<span class="op">=</span><span class="st">"Wine class"</span>)</span>
 <span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/cell-7-output-1.png" width="598" height="451" class="figure-img"></p>
+<div id="fig-wine-alcohol-color" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-wine-alcohol-color-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-wine-alcohol-color-output-1.png" width="598" height="451" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-wine-alcohol-color-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Alcohol content versus color intensity by wine class.
+</figcaption>
 </figure>
 </div>
 </div>

@@ -1,0 +1,17 @@
+---
+title: "Visiting Iris Dataset with R"
+author: "Sicong Deng"
+date: 2026-09-21
+---
+
+## Loading Data and Libraries
+
+```{R}
+library(readr)
+```
+
+## 
+
+```{R}
+
+```

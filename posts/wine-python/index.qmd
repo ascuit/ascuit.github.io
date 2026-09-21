@@ -1,5 +1,5 @@
 ---
-title: "Visiting Wine Dataset"
+title: "Visiting Wine Dataset with Python"
 author: "Sicong Deng"
 date: 2026-09-21
 jupyter: python3
@@ -15,6 +15,10 @@ This dataset is licensed under a Creative Commons Attribution 4.0 International 
 For data analysis and vitualization, `panda` and `matplotllib ` are used.
 
 ```{python}
+#| label: setup
+#| message: false
+#| warning: false
+
 from sklearn.datasets import load_wine
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -69,7 +73,12 @@ class_summary = (
 
 class_summary
 ```
+
+## Plotting
+
 ```{python}
+#| label: fig-wine-alcohol-color
+#| fig-cap: "Alcohol content versus color intensity by wine class."
 for wine_class, group in wine_selected.groupby("class"):
     plt.scatter(
         group["alcohol"],
