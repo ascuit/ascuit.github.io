@@ -6,12 +6,76 @@ date: 2026-09-21
 
 ## Loading Data and Libraries
 
+The `Iris` dataset is a classic dataset by Ronald Fisher in 1936. It contains 150 observations of iris flowers from three species: *Iris setosa*, *Iris versicolor*, and *Iris virginica*.
+
+*Dataset is available on [UCI Iris page](https://archive.ics.uci.edu/dataset/53/iris?utm_source=chatgpt.com).This dataset is licensed under a Creative Commons Attribution 4.0 International (CC BY 4.0) license.*
+
+In this analysis, a local copy of the Iris dataset distributed with R is used. Storing the dataset within the repository ensures that the analysis can be reproduced without retrieving data from an external server.
+
 ```{R}
+#| label: setup
+#| message: false
+#| warning: false
+
 library(readr)
+library(dplyr)
+library(ggplot2)
+iris_data <- read_csv("data/iris.csv")
+head(iris_data)
 ```
 
-## 
+## Data Munipulation
+
+The data are grouped by species using `group_by()`, after which `summarise()` is used to calculate the mean sepal length, sepal width, petal length, and petal width for each species. The number of observations in each group is also calculated using `n()`.
+
+This operation transforms the original flower-level dataset into a species-level summary, making it easier to compare the typical physical measurements of the three iris species.
 
 ```{R}
+species_summary <- iris_data |>
+  group_by(Species) |>
+  summarise(
+    mean_sepal_length = mean(Sepal.Length),
+    mean_sepal_width = mean(Sepal.Width),
+    mean_petal_length = mean(Petal.Length),
+    mean_petal_width = mean(Petal.Width),
+    n = n()
+  )
 
+species_summary
+```
+
+This demonstrates a second common manipulation: selecting observations according to a condition and retaining only variables relevant to the question.
+
+```{r}
+large_petals <- iris_data |>
+  filter(Petal.Length > 4) |>
+  select(Species, Petal.Length, Petal.Width)
+
+head(large_petals)
+```
+
+As shown in @fig-iris-petals, petal length and petal width have a clear positive relationship. The three species also form distinct groups based on these two measurements. Iris setosa has substantially smaller petals than the other two species, while Iris versicolor and Iris virginica have larger petals with some overlap between their distributions.
+
+The visualization therefore suggests that petal measurements contain useful information for distinguishing among the three iris species.
+
+```{r}
+#| label: fig-iris-petals
+#| fig-cap: "Petal length versus petal width for the three iris species."
+
+ggplot(
+  iris_data,
+  aes(
+    x = Petal.Length,
+    y = Petal.Width,
+    colour = Species
+  )
+) +
+  geom_point() +
+  labs(
+    title = "Petal Measurements by Iris Species",
+    x = "Petal length (cm)",
+    y = "Petal width (cm)",
+    colour = "Species"
+  ) +
+  theme_minimal()
 ```

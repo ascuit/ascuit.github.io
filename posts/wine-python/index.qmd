@@ -1,18 +1,18 @@
 ---
-title: "Visiting Wine Dataset with Python"
+title: "Visiting Wine Dataset"
 author: "Sicong Deng"
 date: 2026-09-21
 jupyter: python3
 ---
-# 
+# Classify Wines Based on Their Chemicals
 
 ##  Loading data and utils
 
 We use for this part `wine` dataset, which is released in [UCI Machine Learning Repository](https://archive.ics.uci.edu/dataset/109/wine?utm_source=chatgpt.com).
 
-This dataset is licensed under a Creative Commons Attribution 4.0 International (CC BY 4.0) license. DOI: 10.24432/C5PC7J
+*This dataset is licensed under a Creative Commons Attribution 4.0 International (CC BY 4.0) license. DOI: 10.24432/C5PC7J*
 
-For data analysis and vitualization, `panda` and `matplotllib ` are used.
+For data analysis and vitualization, `panda` and `matplotllib ` are used. We start by importing `pandas` and `pyplot` for data analysis and plotting. 
 
 ```{python}
 #| label: setup
@@ -24,25 +24,28 @@ import pandas as pd
 import matplotlib.pyplot as plt
 ```
 
-The `Wine` dataset contains the results of chemical analyses of wines produced from three different cultivars in the same region of Italy. Each observation represents one wine sample and contains 13 numerical features describing its chemical properties.
+`Wine` dataset is save under `data/wine.csv`. The dataset contains the results of chemical analyses of wines produced from three different cultivars in the same region of Italy. Each observation represents one wine sample and contains 13 numerical features describing its chemical properties.
 
 ```{python}
-wine = load_wine(as_frame=True)
-df = wine.frame
-df.head()
-df.describe()
+wine = pd.read_csv("data/wine.csv")
+wine.head()
+wine.describe()
 ```
 
 ## Analysis on Wines
 
+Dataset contains 13 chemical measurements for each wine sample. 
+
+As a showcase, we select four chemical properties—alcohol, malic acid, magnesium, and color intensity—along with the target variable.
 ```{python}
-wine_selected = df[
+wine_selected = wine[
     ["alcohol", "malic_acid", "magnesium", "color_intensity", "target"]
 ]
 
 wine_selected.head()
 ```
 
+The target column represents the three wine classes using the integers 0, 1, and 2. We map these numeric codes to categorical labels and store the result in a new class column. The original numeric target column is then removed. This makes the class variable easier to interpret.
 ```{python}
 wine_selected = wine_selected.copy()
 
@@ -54,9 +57,10 @@ wine_selected["class"] = wine_selected["target"].map({
 
 wine_selected = wine_selected.drop(columns="target")
 
-wine_selected.head()
+wine_selected
 ```
 
+Finally, the observations are grouped by wine class and summarized using the mean of each selected chemical measurement. We also count the number of observations belonging to each class. This transforms the sample-level data into a class-level summary and allows the chemical characteristics of the three wine classes to be compared more easily.
 ```{python}
 class_summary = (
     wine_selected
@@ -74,8 +78,9 @@ class_summary = (
 class_summary
 ```
 
-## Plotting
+Finally, we create a scatter plot that compares alcohol content and color intensity for the three wine classes. Each point represents one sample, while the different colour groups represent the wine classes.
 
+The plot shows that the three classes occupy three different regions. In particular, some classes tend to have different combinations of alcohol content and color intensity. However, there is also overlap between the groups.
 ```{python}
 #| label: fig-wine-alcohol-color
 #| fig-cap: "Alcohol content versus color intensity by wine class."
