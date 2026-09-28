@@ -9,7 +9,7 @@
 <meta name="author" content="Sicong Deng">
 <meta name="dcterms.date" content="2026-09-21">
 
-<title>Visiting Wine Dataset – Sicong Deng</title>
+<title>Analyzing Iris with R and Python – Sicong Deng</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -66,7 +66,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -110,9 +110,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
-
-<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
 
 <link rel="stylesheet" href="../../styles.css">
@@ -163,11 +160,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#classify-wines-based-on-their-chemicals" id="toc-classify-wines-based-on-their-chemicals" class="nav-link active" data-scroll-target="#classify-wines-based-on-their-chemicals">Classify Wines Based on Their Chemicals</a>
-  <ul class="collapse">
-  <li><a href="#loading-data-and-utils" id="toc-loading-data-and-utils" class="nav-link" data-scroll-target="#loading-data-and-utils">Loading data and utils</a></li>
-  <li><a href="#analysis-on-wines" id="toc-analysis-on-wines" class="nav-link" data-scroll-target="#analysis-on-wines">Analysis on Wines</a></li>
-  </ul></li>
+  <li><a href="#loading-the-data-in-r" id="toc-loading-the-data-in-r" class="nav-link active" data-scroll-target="#loading-the-data-in-r">Loading the data in R</a></li>
+  <li><a href="#data-manipulation-in-r" id="toc-data-manipulation-in-r" class="nav-link" data-scroll-target="#data-manipulation-in-r">Data manipulation in R</a></li>
+  <li><a href="#passing-the-data-to-python" id="toc-passing-the-data-to-python" class="nav-link" data-scroll-target="#passing-the-data-to-python">Passing the data to Python</a></li>
+  <li><a href="#passing-the-result-back-to-r" id="toc-passing-the-result-back-to-r" class="nav-link" data-scroll-target="#passing-the-result-back-to-r">Passing the result back to R</a></li>
+  <li><a href="#visualization-in-r" id="toc-visualization-in-r" class="nav-link" data-scroll-target="#visualization-in-r">Visualization in R</a></li>
   </ul>
 </nav>
     </div>
@@ -176,7 +173,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Visiting Wine Dataset</h1>
+<h1 class="title">Analyzing Iris with R and Python</h1>
 </div>
 
 
@@ -205,484 +202,165 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="classify-wines-based-on-their-chemicals" class="level1">
-<h1>Classify Wines Based on Their Chemicals</h1>
-<section id="loading-data-and-utils" class="level2">
-<h2 class="anchored" data-anchor-id="loading-data-and-utils">Loading data and utils</h2>
-<p>We use for this part <code>wine</code> dataset, which is released in <a href="https://archive.ics.uci.edu/dataset/109/wine?utm_source=chatgpt.com">UCI Machine Learning Repository</a>.</p>
-<p><em>This dataset is licensed under a Creative Commons Attribution 4.0 International (CC BY 4.0) license. DOI: 10.24432/C5PC7J</em></p>
-<p>For data analysis and vitualization, <code>panda</code> and <code>matplotllib</code> are used. We start by importing <code>pandas</code> and <code>pyplot</code> for data analysis and plotting.</p>
-<div id="setup" class="cell" data-message="false" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_wine</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This analysis demonstrates interoperability between R and Python using <code>reticulate</code>. The Iris dataset is loaded and initially manipulated in R, passed to Python for further analysis, and then returned to R for visualization.</p>
+<section id="loading-the-data-in-r" class="level2">
+<h2 class="anchored" data-anchor-id="loading-the-data-in-r">Loading the data in R</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reticulate)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'dplyr'</code></pre>
 </div>
-<p><code>Wine</code> dataset is save under <code>data/wine.csv</code>. The dataset contains the results of chemical analyses of wines produced from three different cultivars in the same region of Italy. Each observation represents one wine sample and contains 13 numerical features describing its chemical properties.</p>
-<div id="0b0abbfd" class="cell" data-execution_count="2">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>wine <span class="op">=</span> pd.read_csv(<span class="st">"data/wine.csv"</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>wine.head()</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>wine.describe()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="2">
-<div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
 
+    filter, lag</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
 
-<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">alcohol</th>
-<th data-quarto-table-cell-role="th">malic_acid</th>
-<th data-quarto-table-cell-role="th">ash</th>
-<th data-quarto-table-cell-role="th">alcalinity_of_ash</th>
-<th data-quarto-table-cell-role="th">magnesium</th>
-<th data-quarto-table-cell-role="th">total_phenols</th>
-<th data-quarto-table-cell-role="th">flavanoids</th>
-<th data-quarto-table-cell-role="th">nonflavanoid_phenols</th>
-<th data-quarto-table-cell-role="th">proanthocyanins</th>
-<th data-quarto-table-cell-role="th">color_intensity</th>
-<th data-quarto-table-cell-role="th">hue</th>
-<th data-quarto-table-cell-role="th">od280/od315_of_diluted_wines</th>
-<th data-quarto-table-cell-role="th">proline</th>
-<th data-quarto-table-cell-role="th">target</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">count</th>
-<td>178.000000</td>
-<td>178.000000</td>
-<td>178.000000</td>
-<td>178.000000</td>
-<td>178.000000</td>
-<td>178.000000</td>
-<td>178.000000</td>
-<td>178.000000</td>
-<td>178.000000</td>
-<td>178.000000</td>
-<td>178.000000</td>
-<td>178.000000</td>
-<td>178.000000</td>
-<td>178.000000</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">mean</th>
-<td>13.000618</td>
-<td>2.336348</td>
-<td>2.366517</td>
-<td>19.494944</td>
-<td>99.741573</td>
-<td>2.295112</td>
-<td>2.029270</td>
-<td>0.361854</td>
-<td>1.590899</td>
-<td>5.058090</td>
-<td>0.957449</td>
-<td>2.611685</td>
-<td>746.893258</td>
-<td>0.938202</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">std</th>
-<td>0.811827</td>
-<td>1.117146</td>
-<td>0.274344</td>
-<td>3.339564</td>
-<td>14.282484</td>
-<td>0.625851</td>
-<td>0.998859</td>
-<td>0.124453</td>
-<td>0.572359</td>
-<td>2.318286</td>
-<td>0.228572</td>
-<td>0.709990</td>
-<td>314.907474</td>
-<td>0.775035</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">min</th>
-<td>11.030000</td>
-<td>0.740000</td>
-<td>1.360000</td>
-<td>10.600000</td>
-<td>70.000000</td>
-<td>0.980000</td>
-<td>0.340000</td>
-<td>0.130000</td>
-<td>0.410000</td>
-<td>1.280000</td>
-<td>0.480000</td>
-<td>1.270000</td>
-<td>278.000000</td>
-<td>0.000000</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">25%</th>
-<td>12.362500</td>
-<td>1.602500</td>
-<td>2.210000</td>
-<td>17.200000</td>
-<td>88.000000</td>
-<td>1.742500</td>
-<td>1.205000</td>
-<td>0.270000</td>
-<td>1.250000</td>
-<td>3.220000</td>
-<td>0.782500</td>
-<td>1.937500</td>
-<td>500.500000</td>
-<td>0.000000</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">50%</th>
-<td>13.050000</td>
-<td>1.865000</td>
-<td>2.360000</td>
-<td>19.500000</td>
-<td>98.000000</td>
-<td>2.355000</td>
-<td>2.135000</td>
-<td>0.340000</td>
-<td>1.555000</td>
-<td>4.690000</td>
-<td>0.965000</td>
-<td>2.780000</td>
-<td>673.500000</td>
-<td>1.000000</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">75%</th>
-<td>13.677500</td>
-<td>3.082500</td>
-<td>2.557500</td>
-<td>21.500000</td>
-<td>107.000000</td>
-<td>2.800000</td>
-<td>2.875000</td>
-<td>0.437500</td>
-<td>1.950000</td>
-<td>6.200000</td>
-<td>1.120000</td>
-<td>3.170000</td>
-<td>985.000000</td>
-<td>2.000000</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">max</th>
-<td>14.830000</td>
-<td>5.800000</td>
-<td>3.230000</td>
-<td>30.000000</td>
-<td>162.000000</td>
-<td>3.880000</td>
-<td>5.080000</td>
-<td>0.660000</td>
-<td>3.580000</td>
-<td>13.000000</td>
-<td>1.710000</td>
-<td>4.000000</td>
-<td>1680.000000</td>
-<td>2.000000</td>
-</tr>
-</tbody>
-</table>
+    intersect, setdiff, setequal, union</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>iris_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/iris.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 150 Columns: 5</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (1): Species
+dbl (4): Sepal.Length, Sepal.Width, Petal.Length, Petal.Width
 
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(iris_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 5
+  Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+         &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt; &lt;chr&gt;  
+1          5.1         3.5          1.4         0.2 setosa 
+2          4.9         3            1.4         0.2 setosa 
+3          4.7         3.2          1.3         0.2 setosa 
+4          4.6         3.1          1.5         0.2 setosa 
+5          5           3.6          1.4         0.2 setosa 
+6          5.4         3.9          1.7         0.4 setosa </code></pre>
 </div>
 </div>
-</div>
+<p>The Iris dataset contains measurements of sepal and petal dimensions for 150 flowers belonging to three species. We begin by loading the local copy of the dataset in R.</p>
 </section>
-<section id="analysis-on-wines" class="level2">
-<h2 class="anchored" data-anchor-id="analysis-on-wines">Analysis on Wines</h2>
-<p>Dataset contains 13 chemical measurements for each wine sample.</p>
-<p>As a showcase, we select four chemical properties—alcohol, malic acid, magnesium, and color intensity—along with the target variable.</p>
-<div id="befc299e" class="cell" data-execution_count="3">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>wine_selected <span class="op">=</span> wine[</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    [<span class="st">"alcohol"</span>, <span class="st">"malic_acid"</span>, <span class="st">"magnesium"</span>, <span class="st">"color_intensity"</span>, <span class="st">"target"</span>]</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>wine_selected.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="3">
-<div>
-
-
-<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">alcohol</th>
-<th data-quarto-table-cell-role="th">malic_acid</th>
-<th data-quarto-table-cell-role="th">magnesium</th>
-<th data-quarto-table-cell-role="th">color_intensity</th>
-<th data-quarto-table-cell-role="th">target</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">0</th>
-<td>14.23</td>
-<td>1.71</td>
-<td>127.0</td>
-<td>5.64</td>
-<td>0</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">1</th>
-<td>13.20</td>
-<td>1.78</td>
-<td>100.0</td>
-<td>4.38</td>
-<td>0</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">2</th>
-<td>13.16</td>
-<td>2.36</td>
-<td>101.0</td>
-<td>5.68</td>
-<td>0</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">3</th>
-<td>14.37</td>
-<td>1.95</td>
-<td>113.0</td>
-<td>7.80</td>
-<td>0</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">4</th>
-<td>13.24</td>
-<td>2.59</td>
-<td>118.0</td>
-<td>4.32</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-
+<section id="data-manipulation-in-r" class="level2">
+<h2 class="anchored" data-anchor-id="data-manipulation-in-r">Data manipulation in R</h2>
+<p>We first calculate the mean petal length and width for each species.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>species_summary <span class="ot">&lt;-</span> iris_data <span class="sc">|&gt;</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Species) <span class="sc">|&gt;</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_petal_length =</span> <span class="fu">mean</span>(Petal.Length),</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_petal_width =</span> <span class="fu">mean</span>(Petal.Width),</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">n</span>()</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>species_summary</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 4
+  Species    mean_petal_length mean_petal_width     n
+  &lt;chr&gt;                  &lt;dbl&gt;            &lt;dbl&gt; &lt;int&gt;
+1 setosa                  1.46            0.246    50
+2 versicolor              4.26            1.33     50
+3 virginica               5.55            2.03     50</code></pre>
 </div>
 </div>
-</div>
-<p>The target column represents the three wine classes using the integers 0, 1, and 2. We map these numeric codes to categorical labels and store the result in a new class column. The original numeric target column is then removed. This makes the class variable easier to interpret.</p>
-<div id="9dc62048" class="cell" data-execution_count="4">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>wine_selected <span class="op">=</span> wine_selected.copy()</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>wine_selected[<span class="st">"class"</span>] <span class="op">=</span> wine_selected[<span class="st">"target"</span>].<span class="bu">map</span>({</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="dv">0</span>: <span class="st">"class_0"</span>,</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span>: <span class="st">"class_1"</span>,</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2</span>: <span class="st">"class_2"</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>wine_selected <span class="op">=</span> wine_selected.drop(columns<span class="op">=</span><span class="st">"target"</span>)</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>wine_selected</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="4">
-<div>
-
-
-<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">alcohol</th>
-<th data-quarto-table-cell-role="th">malic_acid</th>
-<th data-quarto-table-cell-role="th">magnesium</th>
-<th data-quarto-table-cell-role="th">color_intensity</th>
-<th data-quarto-table-cell-role="th">class</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">0</th>
-<td>14.23</td>
-<td>1.71</td>
-<td>127.0</td>
-<td>5.64</td>
-<td>class_0</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">1</th>
-<td>13.20</td>
-<td>1.78</td>
-<td>100.0</td>
-<td>4.38</td>
-<td>class_0</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">2</th>
-<td>13.16</td>
-<td>2.36</td>
-<td>101.0</td>
-<td>5.68</td>
-<td>class_0</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">3</th>
-<td>14.37</td>
-<td>1.95</td>
-<td>113.0</td>
-<td>7.80</td>
-<td>class_0</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">4</th>
-<td>13.24</td>
-<td>2.59</td>
-<td>118.0</td>
-<td>4.32</td>
-<td>class_0</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">...</th>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">173</th>
-<td>13.71</td>
-<td>5.65</td>
-<td>95.0</td>
-<td>7.70</td>
-<td>class_2</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">174</th>
-<td>13.40</td>
-<td>3.91</td>
-<td>102.0</td>
-<td>7.30</td>
-<td>class_2</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">175</th>
-<td>13.27</td>
-<td>4.28</td>
-<td>120.0</td>
-<td>10.20</td>
-<td>class_2</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">176</th>
-<td>13.17</td>
-<td>2.59</td>
-<td>120.0</td>
-<td>9.30</td>
-<td>class_2</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">177</th>
-<td>14.13</td>
-<td>4.10</td>
-<td>96.0</td>
-<td>9.20</td>
-<td>class_2</td>
-</tr>
-</tbody>
-</table>
-
-<p>178 rows × 5 columns</p>
+<p>Grouping the observations by species reduces the original flower-level dataset to a species-level summary. The resulting <code>species_summary</code> object is an R data frame containing the average petal measurements and number of observations for each species.</p>
+</section>
+<section id="passing-the-data-to-python" class="level2">
+<h2 class="anchored" data-anchor-id="passing-the-data-to-python">Passing the data to Python</h2>
+<p>The R object can be accessed from Python through <code>r.species_summary</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>summary_python <span class="op">=</span> r.species_summary</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>summary_python</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      Species  mean_petal_length  mean_petal_width   n
+0      setosa              1.462             0.246  50
+1  versicolor              4.260             1.326  50
+2   virginica              5.552             2.026  50</code></pre>
 </div>
 </div>
-</div>
-<p>Finally, the observations are grouped by wine class and summarized using the mean of each selected chemical measurement. We also count the number of observations belonging to each class. This transforms the sample-level data into a class-level summary and allows the chemical characteristics of the three wine classes to be compared more easily.</p>
-<div id="86f12b1f" class="cell" data-execution_count="5">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>class_summary <span class="op">=</span> (</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    wine_selected</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    .groupby(<span class="st">"class"</span>)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    .agg(</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        mean_alcohol<span class="op">=</span>(<span class="st">"alcohol"</span>, <span class="st">"mean"</span>),</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        mean_malic_acid<span class="op">=</span>(<span class="st">"malic_acid"</span>, <span class="st">"mean"</span>),</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        mean_magnesium<span class="op">=</span>(<span class="st">"magnesium"</span>, <span class="st">"mean"</span>),</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        mean_color_intensity<span class="op">=</span>(<span class="st">"color_intensity"</span>, <span class="st">"mean"</span>),</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        n<span class="op">=</span>(<span class="st">"class"</span>, <span class="st">"size"</span>)</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    .reset_index()</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>class_summary</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="5">
-<div>
-
-
-<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">class</th>
-<th data-quarto-table-cell-role="th">mean_alcohol</th>
-<th data-quarto-table-cell-role="th">mean_malic_acid</th>
-<th data-quarto-table-cell-role="th">mean_magnesium</th>
-<th data-quarto-table-cell-role="th">mean_color_intensity</th>
-<th data-quarto-table-cell-role="th">n</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">0</th>
-<td>class_0</td>
-<td>13.744746</td>
-<td>2.010678</td>
-<td>106.338983</td>
-<td>5.528305</td>
-<td>59</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">1</th>
-<td>class_1</td>
-<td>12.278732</td>
-<td>1.932676</td>
-<td>94.549296</td>
-<td>3.086620</td>
-<td>71</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">2</th>
-<td>class_2</td>
-<td>13.153750</td>
-<td>3.333750</td>
-<td>99.312500</td>
-<td>7.396250</td>
-<td>48</td>
-</tr>
-</tbody>
-</table>
-
+<p>Python can now use the data produced by the previous R computation. We calculate the ratio between mean petal length and mean petal width.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>summary_python[<span class="st">"petal_ratio"</span>] <span class="op">=</span> (</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    summary_python[<span class="st">"mean_petal_length"</span>]</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">/</span> summary_python[<span class="st">"mean_petal_width"</span>]</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>summary_python</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      Species  mean_petal_length  mean_petal_width   n  petal_ratio
+0      setosa              1.462             0.246  50     5.943089
+1  versicolor              4.260             1.326  50     3.212670
+2   virginica              5.552             2.026  50     2.740375</code></pre>
 </div>
 </div>
+<p>The new <code>petal_ratio</code> variable is therefore computed in Python from summary statistics originally calculated in R.</p>
+</section>
+<section id="passing-the-result-back-to-r" class="level2">
+<h2 class="anchored" data-anchor-id="passing-the-result-back-to-r">Passing the result back to R</h2>
+<p>The Python object is returned to R using <code>py$summary_python</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>final_summary <span class="ot">&lt;-</span> py<span class="sc">$</span>summary_python</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>final_summary</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     Species mean_petal_length mean_petal_width  n petal_ratio
+1     setosa             1.462            0.246 50    5.943089
+2 versicolor             4.260            1.326 50    3.212670
+3  virginica             5.552            2.026 50    2.740375</code></pre>
 </div>
-<p>Finally, we create a scatter plot that compares alcohol content and color intensity for the three wine classes. Each point represents one sample, while the different colour groups represent the wine classes.</p>
-<p>The plot shows that the three classes occupy three different regions. In particular, some classes tend to have different combinations of alcohol content and color intensity. However, there is also overlap between the groups.</p>
-<div id="cell-fig-wine-alcohol-color" class="cell" data-execution_count="6">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> wine_class, group <span class="kw">in</span> wine_selected.groupby(<span class="st">"class"</span>):</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    plt.scatter(</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>        group[<span class="st">"alcohol"</span>],</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>        group[<span class="st">"color_intensity"</span>],</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span>wine_class,</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        alpha<span class="op">=</span><span class="fl">0.7</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Alcohol"</span>)</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Color intensity"</span>)</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Alcohol vs. Color Intensity by Wine Class"</span>)</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>plt.legend(title<span class="op">=</span><span class="st">"Wine class"</span>)</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display">
-<div id="fig-wine-alcohol-color" class="quarto-float quarto-figure quarto-figure-center anchored">
+</div>
+<p>At this point, <code>final_summary</code> contains results produced by both languages: the group-level statistics were calculated in R, while <code>petal_ratio</code> was calculated in Python.</p>
+</section>
+<section id="visualization-in-r" class="level2">
+<h2 class="anchored" data-anchor-id="visualization-in-r">Visualization in R</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  final_summary,</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> Species,</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> petal_ratio,</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> Species</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Petal Length-to-Width Ratio by Species"</span>,</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Species"</span>,</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Mean petal length / mean petal width"</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-iris-petal-ratio" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-wine-alcohol-color-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="index_files/figure-html/fig-wine-alcohol-color-output-1.png" width="598" height="451" class="figure-img">
+<div aria-describedby="fig-iris-petal-ratio-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-iris-petal-ratio-1.png" class="img-fluid figure-img" width="672">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-wine-alcohol-color-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Alcohol content versus color intensity by wine class.
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-iris-petal-ratio-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Ratio of mean petal length to mean petal width by Iris species.
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
+<p>As shown in <a href="#fig-iris-petal-ratio" class="quarto-xref">Figure&nbsp;1</a>, the ratio between mean petal length and mean petal width differs among the three Iris species. The values plotted here depend on computations performed in both R and Python, demonstrating how objects can be transferred between the two languages within a single Quarto document.</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->

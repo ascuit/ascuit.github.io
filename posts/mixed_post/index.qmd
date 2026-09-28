@@ -1,0 +1,121 @@
+---
+title: "Analyzing Iris with R and Python"
+author: "Sicong Deng"
+date: 2026-09-21
+format: html
+engine: knitr
+---
+
+This analysis demonstrates interoperability between R and Python using
+`reticulate`. The Iris dataset is loaded and initially manipulated in R,
+passed to Python for further analysis, and then returned to R for
+visualization.
+
+## Loading the data in R
+
+```{r}
+library(reticulate)
+library(readr)
+library(dplyr)
+library(ggplot2)
+
+iris_data <- read_csv("data/iris.csv")
+
+head(iris_data)
+```
+
+The Iris dataset contains measurements of sepal and petal dimensions for
+150 flowers belonging to three species. We begin by loading the local
+copy of the dataset in R.
+
+## Data manipulation in R
+
+We first calculate the mean petal length and width for each species.
+
+```{r}
+species_summary <- iris_data |>
+  group_by(Species) |>
+  summarise(
+    mean_petal_length = mean(Petal.Length),
+    mean_petal_width = mean(Petal.Width),
+    n = n()
+  )
+
+species_summary
+```
+
+Grouping the observations by species reduces the original flower-level
+dataset to a species-level summary. The resulting `species_summary`
+object is an R data frame containing the average petal measurements and
+number of observations for each species.
+
+## Passing the data to Python
+
+The R object can be accessed from Python through `r.species_summary`.
+
+```{python}
+import pandas as pd
+
+summary_python = r.species_summary
+
+summary_python
+```
+
+Python can now use the data produced by the previous R computation. We
+calculate the ratio between mean petal length and mean petal width.
+
+```{python}
+summary_python["petal_ratio"] = (
+    summary_python["mean_petal_length"]
+    / summary_python["mean_petal_width"]
+)
+
+summary_python
+```
+
+The new `petal_ratio` variable is therefore computed in Python from
+summary statistics originally calculated in R.
+
+## Passing the result back to R
+
+The Python object is returned to R using `py$summary_python`.
+
+```{r}
+final_summary <- py$summary_python
+
+final_summary
+```
+
+At this point, `final_summary` contains results produced by both
+languages: the group-level statistics were calculated in R, while
+`petal_ratio` was calculated in Python.
+
+## Visualization in R
+
+```{r}
+#| label: fig-iris-petal-ratio
+#| fig-cap: "Ratio of mean petal length to mean petal width by Iris species."
+
+ggplot(
+  final_summary,
+  aes(
+    x = Species,
+    y = petal_ratio,
+    fill = Species
+  )
+) +
+  geom_col() +
+  labs(
+    title = "Petal Length-to-Width Ratio by Species",
+    x = "Species",
+    y = "Mean petal length / mean petal width"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+As shown in @fig-iris-petal-ratio, the ratio between mean petal length
+and mean petal width differs among the three Iris species. The values
+plotted here depend on computations performed in both R and Python,
+demonstrating how objects can be transferred between the two languages
+within a single Quarto document.

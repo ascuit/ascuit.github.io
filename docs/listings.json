@@ -3,6 +3,7 @@
     "listing": "/blog.html",
     "items": [
       "/posts/iris-r/index.html",
+      "/posts/mixed_post/index.html",
       "/posts/wine-python/index.html",
       "/posts/first-weeks/index.html"
     ]
