@@ -1,7 +1,7 @@
 ---
-title: "Analyzing Iris with R and Python"
+title: "Iris Revisited with R and Python"
 author: "Sicong Deng"
-date: 2026-09-21
+date: 2026-09-28
 format: html
 engine: knitr
 ---
